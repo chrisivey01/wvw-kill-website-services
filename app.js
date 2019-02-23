@@ -19,6 +19,8 @@ app.use(bodyParser.urlencoded({extended: true})); // support encoded bodies
 const services = require('./services/services')
 const world = require('./services/worldList')
 const updateKills = require('./services/updateKills')
+const updateKillsFriday = require('./services/updateKillsFriday')
+
 
 const pool = require('./services/database');
 
@@ -35,9 +37,8 @@ new CronJob('0 */5 * * * *', function() {
 }, null, true, 'America/Chicago');
 
 new CronJob('0 0 20 * * FRI', function() {
-// new CronJob('0/15 * * * * *', function() {
 
-    updateKills.updateKills(pool)
+    updateKillsFriday.updateKills(pool)
 
     console.log('You will see this message every friday 8pm');
 }, null, true, 'America/Chicago');

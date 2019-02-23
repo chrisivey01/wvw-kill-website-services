@@ -13,11 +13,11 @@ module.exports = {
 
 
                             let current_kills = updatedkillResults.current
-                            let weekly_tally = 0
+                            let weekly_tally = updatedkillResults.current
                             let weekly_kill_total = 0
                             let api = player.api
 
-                            let killWeeklySQL = "UPDATE users SET weekly_tally = ?, weekly_kill_total = ? WHERE api = ?";
+                            let killWeeklySQL = "UPDATE users SET current_kills = ?, weekly_tally = ?, weekly_kill_total = ? WHERE api = ?";
                             var values = [
                                 current_kills,
                                 weekly_tally,
