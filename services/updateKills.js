@@ -7,8 +7,6 @@ module.exports = {
         results.map(player => {
           return services.obtainAchievements(player.api).then(killResults => {
             let updatedkillResults = killResults.find(res => res.id === 283);
-            console.log("new" + updatedkillResults.current);
-            console.log("old" + player.current_kills);
 
             let weekly_tally = updatedkillResults.current;
             let weekly_kill_total =
