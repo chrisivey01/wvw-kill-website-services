@@ -30,9 +30,9 @@ const pool = require("./services/database");
 //cron job to update kills
 var CronJob = require("cron").CronJob;
 new CronJob(
-      "0 */1 * * * *",
+    //   "0 */1 * * * *",
 
-//   "0 */5 * * * *",
+  "0 */5 * * * *",
   function() {
     // new CronJob('0/15 * * * * *', function() {
     updateKills.updateKills(pool);
