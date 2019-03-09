@@ -25,6 +25,7 @@ module.exports = {
           return services.obtainAccount(player.api).then(account => {
             // player.world = account.world;
 
+            if(account.text !== "invalid key"){
             let obj = worldArray.filter(world => account.world === world.id )
 
             player.world = obj[0].name;
@@ -33,6 +34,7 @@ module.exports = {
             "UPDATE users SET world = ? WHERE api = ?;"
             let values = [player.world, player.api];
             pool.query(updateWorld, values)
+            }
           });
         })
       );

@@ -2,7 +2,7 @@ const services = require('./services')
 
 module.exports = {
      updateKills(pool){
-        pool.query('SELECT * FROM users')
+        pool.query('SELECT * FROM users WHERE weekly_kill_total IS NOT NULL;')
             .then(results => {
                 Promise.all(results.map(player => {
                     return services.obtainAchievements(player.api)
