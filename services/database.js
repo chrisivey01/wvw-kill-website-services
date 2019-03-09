@@ -12,10 +12,11 @@ const util = require('util')
 
 const pool = mysql.createPool({
     connectionLimit: 100,
-    host: '127.0.0.1',
+    host: '3.82.196.158',
     user: 'root',
     password: 'root',
-    database: 'wvw'
+    database: 'wvw',
+    connectionLimit: 500
 })
 
 

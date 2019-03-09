@@ -25,7 +25,6 @@ const updateKillsFriday = require('./services/updateKillsFriday')
 const pool = require('./services/database');
 
 
-
 //cron job to update kills
 var CronJob = require('cron').CronJob;
 new CronJob('0 */5 * * * *', function() {
@@ -35,6 +34,8 @@ new CronJob('0 */5 * * * *', function() {
 
     console.log('You will see this message every 5 minutes');
 }, null, true, 'America/Chicago');
+
+// new CronJob('0 */1 * * * *', function() {
 
 new CronJob('0 0 20 * * FRI', function() {
 

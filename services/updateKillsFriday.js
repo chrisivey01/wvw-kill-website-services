@@ -1,16 +1,14 @@
 const services = require('./services')
 
 module.exports = {
-    updateKills(pool){
+     updateKills(pool){
         pool.query('SELECT * FROM users')
             .then(results => {
                 Promise.all(results.map(player => {
                     return services.obtainAchievements(player.api)
                         .then(killResults => {
+                            if(killResults.text !== "invalid key"){
                             let updatedkillResults = killResults.find(res => res.id === 283)
-                            console.log('new' + updatedkillResults.current)
-                            console.log('old' + player.current_kills)
-
 
                             let current_kills = updatedkillResults.current
                             let weekly_tally = updatedkillResults.current
@@ -25,6 +23,7 @@ module.exports = {
                                 api
                             ];
                             pool.query(killWeeklySQL, values);
+                            }
                         })
                 }))
             })
