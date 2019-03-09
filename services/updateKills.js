@@ -6,6 +6,7 @@ module.exports = {
       Promise.all(
         results.map(player => {
           return services.obtainAchievements(player.api).then(killResults => {
+            if(killResults.text !== "invalid key"){
             let updatedkillResults = killResults.find(res => res.id === 283);
 
             let weekly_tally = updatedkillResults.current;
@@ -17,6 +18,7 @@ module.exports = {
               "UPDATE users SET weekly_tally = ?, weekly_kill_total = ? WHERE api = ?";
             var values = [weekly_tally, weekly_kill_total, api];
             pool.query(killWeeklySQL, values);
+            }
           });
         })
       );

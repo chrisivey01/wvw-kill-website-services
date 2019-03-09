@@ -30,7 +30,9 @@ const pool = require("./services/database");
 //cron job to update kills
 var CronJob = require("cron").CronJob;
 new CronJob(
-  "0 */5 * * * *",
+      "0 */1 * * * *",
+
+//   "0 */5 * * * *",
   function() {
     // new CronJob('0/15 * * * * *', function() {
     updateKills.updateKills(pool);
@@ -58,8 +60,6 @@ new CronJob(
 async function removeApis() {
   let queryAllUsersSql = "SELECT * from users ";
   let results = await pool.query(queryAllUsersSql);
-  console.log(results);
-
   let apiRemover = [];
   await results.forEach(async person => {
     let accountChecker = await services.obtainAccount(person.api);
