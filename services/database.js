@@ -16,7 +16,7 @@ const pool = mysql.createPool({
     user: 'root',
     password: 'root',
     database: 'users',
-    connectionLimit: 500
+    // connectionLimit: 500
 })
 
 
