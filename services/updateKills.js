@@ -10,7 +10,9 @@ module.exports = {
         results.map(player => {
           return services.obtainAchievements(player.api).then(killResults => {
             if(killResults.text !== "invalid key"){
-            let updatedkillResults = killResults.find(res => res.id === 283);
+                console.log(killResults)
+
+                let updatedkillResults = killResults.find(res => res.id === 283);
 
             let weekly_tally = updatedkillResults.current;
             let weekly_kill_total =
@@ -32,7 +34,7 @@ module.exports = {
 
             if(account.text !== "invalid key"){
             let obj = worldArray.filter(world => account.world === world.id )
-
+            console.log(account)
             player.world = obj[0].name;
 
             let updateWorld = 
