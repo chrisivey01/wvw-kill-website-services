@@ -2,7 +2,10 @@ const services = require("./services");
 
 module.exports = {
   updateKills(pool) {
-    pool.query("SELECT * FROM users").then(results => {
+    pool.query("SELECT * FROM users").then((results,err) => {
+        if(err){
+            console.error(err)
+        }
       Promise.all(
         results.map(player => {
           return services.obtainAchievements(player.api).then(killResults => {
