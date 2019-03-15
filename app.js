@@ -151,7 +151,6 @@ app.post("/api", (req, res) => {
 
 app.post("/submit", (req, res) => {
     const data = req.body.accountData;
-    console.log(data);
     const guildSelector = req.body.guildSelector;
 
     let myData = {
@@ -161,9 +160,11 @@ app.post("/submit", (req, res) => {
         current_kills: data.killInfo.current,
         guild: guildSelector
     };
-    let wvwSql = "INSERT INTO users (api, name, world, current_kills, guild) VALUES (?) ON DUPLICATE KEY UPDATE guild = VALUES(guild), world = VALUES(world)";
+    console.log(myData);
 
-    pool.query(wvwSql, [myData]);
+    let wvwSql = "INSERT INTO users SET ? ON DUPLICATE KEY UPDATE guild = VALUES(guild), world = VALUES(world)";
+
+    pool.query(wvwSql, myData);
 
     res.send("Account Submitted!");
 });
