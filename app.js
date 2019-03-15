@@ -161,7 +161,7 @@ app.post("/submit", (req, res) => {
         current_kills: data.killInfo.current,
         guild: guildSelector
     };
-    let wvwSql = `INSERT INTO users (api, name, world, current_kills, guild) VALUES ? ON DUPLICATE KEY UPDATE guild = VALUES(guild), world = VALUES(world)`;
+    let wvwSql = "INSERT INTO users (api, name, world, current_kills, guild) VALUES ? ON DUPLICATE KEY UPDATE guild = VALUES(guild), world = VALUES(world)";
 
     pool.query(wvwSql, [myData]);
 
