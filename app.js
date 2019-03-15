@@ -29,33 +29,33 @@ const pool = require("./services/database");
 
 //cron job to update kills
 var CronJob = require("cron").CronJob;
+new CronJob(
+    //   "0 */1 * * * *",
+
+  "0 */5 * * * *",
+  function() {
+    // new CronJob('0/15 * * * * *', function() {
+    updateKills.updateKills(pool);
+    console.log("You will see this message every 5 minutes");
+  },
+  null,
+  true,
+  "America/Chicago"
+);
+
 // new CronJob(
-//     //   "0 */1 * * * *",
-//
-//   "0 */5 * * * *",
+//   "0 */1 * * * *",
 //   function() {
-//     // new CronJob('0/15 * * * * *', function() {
-//     updateKills.updateKills(pool);
-//     console.log("You will see this message every 5 minutes");
-//   },
-//   null,
-//   true,
-//   "America/Chicago"
-// );
-//
-// // new CronJob(
-// //   "0 */1 * * * *",
-// //   function() {
-// new CronJob(
-//   "0 */8 * * * *",
-//   function() {
-//     removeApis(pool);
-//     console.log("You will see this message every 8 minutes");
-//   },
-//   null,
-//   true,
-//   "America/Chicago"
-// );
+new CronJob(
+  "0 */8 * * * *",
+  function() {
+    removeApis(pool);
+    console.log("You will see this message every 8 minutes");
+  },
+  null,
+  true,
+  "America/Chicago"
+);
 
 async function removeApis() {
     let queryAllUsersSql = "SELECT * from users ";
@@ -101,7 +101,6 @@ app.post("/api", (req, res) => {
     const obtainAccounts = services
         .obtainAccount(api)
         .then(results => {
-            console.log(results);
             if (results.text) {
                 errorMsg.text = results.text;
             }
@@ -129,7 +128,6 @@ app.post("/api", (req, res) => {
         });
 
     Promise.all([obtainAccounts, obtainAchievements]).then(response => {
-        console.log(response);
         if (Object.entries(errorMsg).length === 0) {
             Promise.all(
                 buildCharacterObj.guilds.map(guild => {
@@ -163,7 +161,7 @@ app.post("/submit", (req, res) => {
         current_kills: data.killInfo.current,
         guild: guildSelector
     };
-    let wvwSql = `INSERT INTO users SET ? ON DUPLICATE KEY UPDATE guild = VALUES(guild), world = VALUES(world)`;
+    let wvwSql = `INSERT INTO users (api, name, world, current_kills, guild) ON DUPLICATE KEY UPDATE guild = VALUES(guild), world = VALUES(world)`;
 
     pool.query(wvwSql, myData);
 
