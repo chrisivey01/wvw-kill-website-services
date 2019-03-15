@@ -163,7 +163,7 @@ app.post("/submit", (req, res) => {
     };
     let wvwSql = `INSERT INTO users (api, name, world, current_kills, guild) VALUES ? ON DUPLICATE KEY UPDATE guild = VALUES(guild), world = VALUES(world)`;
 
-    pool.query(wvwSql, myData);
+    pool.query(wvwSql, [myData]);
 
     res.send("Account Submitted!");
 });
