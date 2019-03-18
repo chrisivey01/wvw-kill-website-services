@@ -89,7 +89,11 @@ new CronJob(
 );
 
 // start the server
-var httpsServer = https.createServer(app);
+const options = {
+    key: fs.readFileSync('/etc/letsencrypt/live/wvw-community.com/privkey.pem'),
+    cert: fs.readFileSync('/etc/letsencrypt/live/wvw-community.com/fullchain.pem')
+};
+var httpsServer = https.createServer(options, app);
 httpsServer.listen(port);
 
 console.log("Server started! At http://localhost:" + port);
