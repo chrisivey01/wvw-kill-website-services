@@ -14,6 +14,7 @@ app.use(function (req, res, next) {
     next();
 });
 
+const https = require('https');
 const bodyParser = require("body-parser");
 app.use(bodyParser.json()); // support json encoded bodies
 app.use(bodyParser.urlencoded({extended: true})); // support encoded bodies
@@ -76,7 +77,8 @@ async function removeApis() {
 
 // new CronJob('0 */1 * * * *', function() {
 new CronJob(
-    "0 0 20 * * FRI",
+    //update -1 for DST or +1 goes between 20 or 21
+    "0 0 21 * * FRI",
     function () {
         updateKillsFriday.updateKills(pool);
         console.log("You will see this message every friday 8pm");
@@ -87,7 +89,8 @@ new CronJob(
 );
 
 // start the server
-app.listen(port);
+var httpsServer = https.createServer(app);
+httpsServer.listen(port);
 
 console.log("Server started! At http://localhost:" + port);
 
