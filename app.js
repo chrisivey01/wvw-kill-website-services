@@ -89,12 +89,19 @@ new CronJob(
 );
 
 // start the server
-const options = {
-    key: fs.readFileSync('/etc/letsencrypt/live/wvw-community.com/privkey.pem'),
-    cert: fs.readFileSync('/etc/letsencrypt/live/wvw-community.com/fullchain.pem')
-};
-var httpsServer = https.createServer(options, app);
-httpsServer.listen(port);
+const privateKey = fs.readFileSync( '/etc/letsencrypt/live/wvw-community.com/privkey.pem' );
+const certificate = fs.readFileSync( '/etc/letsencrypt/live/wvw-community.com/fullchain.pem' );
+
+https.createServer({
+    key: privateKey,
+    cert: certificate
+}, app).listen(port);
+// const options = {
+//     key: fs.readFileSync('/etc/letsencrypt/live/wvw-community.com/privkey.pem'),
+//     cert: fs.readFileSync('/etc/letsencrypt/live/wvw-community.com/fullchain.pem')
+// };
+// var httpsServer = https.createServer(options, app);
+// httpsServer.listen(port);
 
 console.log("Server started! At http://localhost:" + port);
 
