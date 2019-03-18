@@ -14,7 +14,6 @@ app.use(function (req, res, next) {
     next();
 });
 
-const https = require('https');
 const bodyParser = require("body-parser");
 app.use(bodyParser.json()); // support json encoded bodies
 app.use(bodyParser.urlencoded({extended: true})); // support encoded bodies
@@ -89,19 +88,7 @@ new CronJob(
 );
 
 // start the server
-const privateKey = fs.readFileSync( '/etc/letsencrypt/live/wvw-community.com/privkey.pem' );
-const certificate = fs.readFileSync( '/etc/letsencrypt/live/wvw-community.com/fullchain.pem' );
-
-https.createServer({
-    key: privateKey,
-    cert: certificate
-}, app).listen(port);
-// const options = {
-//     key: fs.readFileSync('/etc/letsencrypt/live/wvw-community.com/privkey.pem'),
-//     cert: fs.readFileSync('/etc/letsencrypt/live/wvw-community.com/fullchain.pem')
-// };
-// var httpsServer = https.createServer(options, app);
-// httpsServer.listen(port);
+app.listen(port);
 
 console.log("Server started! At http://localhost:" + port);
 
