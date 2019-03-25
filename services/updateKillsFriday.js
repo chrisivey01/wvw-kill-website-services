@@ -7,10 +7,12 @@ module.exports = {
       let queryResults = await pool.query(
         "SELECT * FROM users WHERE weekly_kill_total IS NOT NULL;"
       );
+      let killIterator = 0;
       for (results of queryResults) {
         let gw2Results = await services.obtainAchievements(player.api);
         delay(2000);
         let updatedkillResults = gw2Results.data.find(res => res.id === 283)
+        console.log('Kill clear ' + killIterator++)
 
         let current_kills = updatedkillResults.current;
         let weekly_tally = updatedkillResults.current;

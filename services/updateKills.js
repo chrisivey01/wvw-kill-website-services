@@ -4,13 +4,13 @@ const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
 module.exports = {
   async updateKills(pool) {
     let queryResults = await pool.query("SELECT * FROM users");
-
+    let killIterator = 0;
     for (player of queryResults) {
       try {
         let gw2Results = await services.obtainAchievements(player.api);
         delay(2000);
         let updatedkillResults = gw2Results.data.find(res => res.id === 283);
-
+        console.log('Kill iterator ' + killIterator++)
         let weekly_tally = updatedkillResults.current;
         let weekly_kill_total =
           updatedkillResults.current - player.current_kills;
