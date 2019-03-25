@@ -9,7 +9,7 @@ module.exports = {
       );
       for (results of queryResults) {
         let gw2Results = await services.obtainAchievements(player.api);
-        delay(1000);
+        delay(2000);
         let updatedkillResults = gw2Results.data.find(res => res.id === 283)
 
         let current_kills = updatedkillResults.current;

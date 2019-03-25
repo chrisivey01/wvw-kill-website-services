@@ -66,7 +66,7 @@ async function removeApis() {
     // results.forEach(async person => {
     try {
       let accountChecker = await services.obtainAccount(api);
-      delay(1000)
+      delay(2000)
       console.log("Good account..." + iterator++);
     } catch (e) {
       if (e.response.data.text === "invalid key") {
