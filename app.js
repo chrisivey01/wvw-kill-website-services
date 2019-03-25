@@ -56,12 +56,13 @@ new CronJob(
   true,
   "America/Chicago"
 );
-
+const delay = ms => new Promise(resolve => setTimeout(resolve,ms))
 async function removeApis() {
     let queryAllUsersSql = "SELECT * from users ";
     let results = await pool.query(queryAllUsersSql);
     let apiRemover = [];
     await results.forEach(async person => {
+        delay(1000)
         let accountChecker = await services.obtainAccount(person.api);
         if (accountChecker.text === "invalid key") {
             apiRemover.push(person.api);
