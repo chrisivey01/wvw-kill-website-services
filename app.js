@@ -31,10 +31,12 @@ const pool = require("./services/database");
 var CronJob = require("cron").CronJob;
 
 new CronJob(
-  "0 */10 * * * *",
+    "*/30 * * * * *",
+
+  // "0 0 */1 * * *",
   function() {
     updateKills.updateKills(pool);
-    console.log("You will see this message every 10 minutes");
+    console.log("You will see this message every 1 hour");
   },
   null,
   true,
@@ -45,10 +47,10 @@ new CronJob(
 //   "0 */1 * * * *",
 //   function() {
 new CronJob(
-  "0 */15 * * * *",
+  "0 0 */12 * * *",
   function() {
     removeApis(pool);
-    console.log("You will see this message every 15 minutes");
+    console.log("You will see this message every 12 hours");
   },
   null,
   true,
