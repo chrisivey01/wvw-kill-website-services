@@ -8,7 +8,7 @@ module.exports = {
     for (player of queryResults) {
       try {
         let gw2Results = await services.obtainAchievements(player.api);
-        await delay(2000);
+        // await delay(2000);
         let updatedkillResults = gw2Results.data.find(res => res.id === 283);
         console.log('Kill iterator ' + killIterator++)
         let weekly_tally = updatedkillResults.current;
