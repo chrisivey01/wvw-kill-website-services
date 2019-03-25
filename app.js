@@ -31,9 +31,9 @@ const pool = require("./services/database");
 var CronJob = require("cron").CronJob;
 
 new CronJob(
-    // "0 */15 * * * *",
+    "0 */15 * * * *",
 
-  "0 0 */1 * * *",
+  // "0 0 */1 * * *",
   function() {
     updateKills.updateKills(pool);
     console.log("You will see this message every 1 hour");
