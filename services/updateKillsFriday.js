@@ -1,4 +1,5 @@
 const services = require('./services')
+const delay = ms => new Promise(resolve => setTimeout(resolve,ms))
 
 module.exports = {
      updateKills(pool){
@@ -8,6 +9,7 @@ module.exports = {
                     return services.obtainAchievements(player.api)
                         .then(killResults => {
                             if(killResults.text !== "invalid key"){
+                            delay(1000)
                             let updatedkillResults = killResults.find(res => res.id === 283)
 
                             let current_kills = updatedkillResults.current
