@@ -17,7 +17,7 @@ module.exports = {
     },
 
     async guildObtainer(guildId){
-        return await fetch(guildUrl + guildId)
+        return await axios(guildUrl + guildId)
             // .then(results => results.json())
     }
 }

@@ -31,7 +31,7 @@ const pool = require("./services/database");
 var CronJob = require("cron").CronJob;
 
 new CronJob(
-    // "0 */15 * * * *",
+  // "0 */15 * * * *",
 
   "0 0 */1 * * *",
   function() {
@@ -64,7 +64,7 @@ async function removeApis() {
   let badIterator = 0;
 
   for (remove of results) {
-    await delay(2000)
+    await delay(2000);
 
     let api = remove.api;
     try {
@@ -99,63 +99,100 @@ app.listen(port);
 
 console.log("Server started! At http://localhost:" + port);
 
-app.post("/api", (req, res) => {
+app.post("/api", async (req, res) => {
   const api = req.body.api;
 
   let buildCharacterObj = {};
   let errorMsg = {};
   let guildArray = [];
 
-  const obtainAccounts = services
-    .obtainAccount(api)
-    .then(results => {
-      if (results.text) {
-        errorMsg.text = results.text;
-      }
-      buildCharacterObj.api = api;
-      buildCharacterObj.name = results.name;
-      let obj = worldArray.filter(world => results.world === world.id);
-      buildCharacterObj.world = obj[0].name;
-      buildCharacterObj.guilds = results.guilds;
-    })
-    .catch(err => {
-      console.log(err);
-    });
+  try {
+    const obtainAccounts = await services.obtainAccount(api);
+    buildCharacterObj.api = api;
+    buildCharacterObj.name = obtainAccounts.data.name;
+    let findWorld = worldArray.filter(
+      world => obtainAccounts.data.world === world.id
+    );
+    buildCharacterObj.world = findWorld[0].name;
+    buildCharacterObj.guilds = obtainAccounts.data.guilds;
+  } catch (e) {
+    console.log(e.response.text);
+    res.send(e.response.text);
+  }
 
-  const obtainAchievements = services
-    .obtainAchievements(api)
-    .then(results => {
-      if (results.text) {
-        errorMsg.text = results.text;
-      }
-      buildCharacterObj.killInfo = results.find(res => res.id === 283);
-      return buildCharacterObj;
-    })
-    .catch(err => {
-      console.log(err);
-    });
+  try {
+    const obtainAchievements = await services.obtainAchievements(api);
 
-  Promise.all([obtainAccounts, obtainAchievements]).then(response => {
-    if (Object.entries(errorMsg).length === 0) {
-      Promise.all(
-        buildCharacterObj.guilds.map(guild => {
-          return services.guildObtainer(guild).then(results => {
-            guildArray.push(`${results.name} ${results.tag}`);
-          });
-        })
-      )
-        .then(() => {
-          buildCharacterObj.guildNames = guildArray;
-          res.send(buildCharacterObj);
-        })
-        .catch(err => {
-          res.send(err);
-        });
-    } else {
-      res.send(errorMsg);
-    }
-  });
+    buildCharacterObj.killInfo = obtainAchievements.data.find(
+      res => res.id === 283
+    );
+    buildCharacterObj;
+  } catch (e) {
+    console.log(e.response);
+    res.send(e.response.text);
+  }
+
+  try {
+    await Promise.all(buildCharacterObj.guilds.map(async guild => {
+      let obtainGuild = await services.guildObtainer(guild)
+        guildArray.push(`${obtainGuild.data.name} ${obtainGuild.data.tag}`);
+      }))
+    
+
+    buildCharacterObj.guildNames = guildArray;
+    res.send(buildCharacterObj);
+  } catch (e) {
+    res.send('Submit failed! Contact Chris')
+  }
 });
+//     .then(results => {
+//       if (results.text) {
+//         errorMsg.text = results.text;
+//       }
+//       buildCharacterObj.api = api;
+//       buildCharacterObj.name = results.name;
+//       let obj = worldArray.filter(world => results.world === world.id);
+//       buildCharacterObj.world = obj[0].name;
+//       buildCharacterObj.guilds = results.guilds;
+//     })
+//     .catch(err => {
+//       console.log(err);
+//     });
+
+//   const obtainAchievements = services
+//     .obtainAchievements(api)
+//     .then(results => {
+//       if (results.text) {
+//         errorMsg.text = results.text;
+//       }
+//       buildCharacterObj.killInfo = results.find(res => res.id === 283);
+//       return buildCharacterObj;
+//     })
+//     .catch(err => {
+//       console.log(err);
+//     });
+
+//   Promise.all([obtainAccounts, obtainAchievements]).then(response => {
+//     if (Object.entries(errorMsg).length === 0) {
+//       Promise.all(
+//         buildCharacterObj.guilds.map(guild => {
+//           return services.guildObtainer(guild).then(results => {
+//             guildArray.push(`${results.name} ${results.tag}`);
+//           });
+//         })
+//       )
+//         .then(() => {
+//           buildCharacterObj.guildNames = guildArray;
+//           res.send(buildCharacterObj);
+//         })
+//         .catch(err => {
+//           res.send(err);
+//         });
+//     } else {
+//       res.send(errorMsg);
+//     }
+//   });
+// });
 
 app.post("/submit", (req, res) => {
   const data = req.body.accountData;
