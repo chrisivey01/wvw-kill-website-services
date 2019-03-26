@@ -116,8 +116,8 @@ app.post("/api", async (req, res) => {
     buildCharacterObj.world = findWorld[0].name;
     buildCharacterObj.guilds = obtainAccounts.data.guilds;
   } catch (e) {
-    console.log(e.response.text);
-    res.send(e.response.text);
+    console.log(e.response.data.text);
+    res.send(e.response.data);
   }
 
   try {
@@ -128,8 +128,8 @@ app.post("/api", async (req, res) => {
     );
     buildCharacterObj;
   } catch (e) {
-    console.log(e.response);
-    res.send(e.response.text);
+    console.log(e.response.data.text);
+    res.send(e.response.data);
   }
 
   try {
