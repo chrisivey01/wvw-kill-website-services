@@ -23,7 +23,7 @@ const services = require("./services/services");
 const world = require("./services/worldList");
 const updateKills = require("./services/updateKills");
 const updateKillsFriday = require("./services/updateKillsFriday");
-const removeBadApis = require("./services/removeBadApis");
+const emailService = require("./services/emailService");
 
 const pool = require("./services/database");
 
@@ -145,54 +145,6 @@ app.post("/api", async (req, res) => {
     res.send('Submit failed! Contact Chris')
   }
 });
-//     .then(results => {
-//       if (results.text) {
-//         errorMsg.text = results.text;
-//       }
-//       buildCharacterObj.api = api;
-//       buildCharacterObj.name = results.name;
-//       let obj = worldArray.filter(world => results.world === world.id);
-//       buildCharacterObj.world = obj[0].name;
-//       buildCharacterObj.guilds = results.guilds;
-//     })
-//     .catch(err => {
-//       console.log(err);
-//     });
-
-//   const obtainAchievements = services
-//     .obtainAchievements(api)
-//     .then(results => {
-//       if (results.text) {
-//         errorMsg.text = results.text;
-//       }
-//       buildCharacterObj.killInfo = results.find(res => res.id === 283);
-//       return buildCharacterObj;
-//     })
-//     .catch(err => {
-//       console.log(err);
-//     });
-
-//   Promise.all([obtainAccounts, obtainAchievements]).then(response => {
-//     if (Object.entries(errorMsg).length === 0) {
-//       Promise.all(
-//         buildCharacterObj.guilds.map(guild => {
-//           return services.guildObtainer(guild).then(results => {
-//             guildArray.push(`${results.name} ${results.tag}`);
-//           });
-//         })
-//       )
-//         .then(() => {
-//           buildCharacterObj.guildNames = guildArray;
-//           res.send(buildCharacterObj);
-//         })
-//         .catch(err => {
-//           res.send(err);
-//         });
-//     } else {
-//       res.send(errorMsg);
-//     }
-//   });
-// });
 
 app.post("/submit", (req, res) => {
   const data = req.body.accountData;
@@ -247,8 +199,14 @@ app.get("/weekly", async function(req, res, next) {
 
 app.get("/topWeeklyGuild", async (req, res, next) => {
   let results = await pool.query(
-    "SELECT guild, SUM(weekly_kill_total) AS guild_weekly_totals FROM users GROUP BY guild"
+    "SELECT guild, SUM(weekly_kill_total) AS guild_weekly_totals FROM users GROUP BY npmguild"
   );
 
   res.send(results);
 });
+
+app.post('/contactMe', (req, res, next) => {
+  console.log(req.body.data)
+  emailService.mailServices(req.body.data)
+  res.send('Mail sent!')
+})
