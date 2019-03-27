@@ -199,7 +199,7 @@ app.get("/weekly", async function(req, res, next) {
 
 app.get("/topWeeklyGuild", async (req, res, next) => {
   let results = await pool.query(
-    "SELECT guild, SUM(weekly_kill_total) AS guild_weekly_totals FROM users GROUP BY npmguild"
+    "SELECT guild, SUM(weekly_kill_total) AS guild_weekly_totals FROM users GROUP BY guild"
   );
 
   res.send(results);
