@@ -47,10 +47,12 @@ new CronJob(
 //   "0 */1 * * * *",
 //   function() {
 new CronJob(
-  "0 0 */12 * * *",
+  // "0 14 23 * * FRI",
+
+  "0 0 */6 * * *",
   function() {
     removeApis(pool);
-    console.log("You will see this message every 12 hours");
+    console.log("You will see this message every 6 hours");
   },
   null,
   true,
