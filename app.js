@@ -43,19 +43,6 @@ new CronJob(
   "America/Chicago"
 );
 
-new CronJob(
-  //update -1 for DST or +1 goes between 20 or 21
-  "0 22 49 * * FRI",
-  // "0 21 05 * * FRI",
-  function() {
-    updateKillsFriday.updateKills(pool);
-    console.log("You will see this message every friday 8:05pm");
-  },
-  null,
-  true,
-  "America/Chicago"
-);
-
 // new CronJob(
 //   "0 */1 * * * *",
 //   function() {
@@ -92,6 +79,20 @@ async function removeApis() {
     }
   }
 }
+
+// new CronJob('0 */1 * * * *', function() {
+new CronJob(
+  //update -1 for DST or +1 goes between 20 or 21
+  // '30 * * * * *',
+  "0 05 21 * * FRI",
+  function() {
+    updateKillsFriday.updateKills(pool);
+    console.log("You will see this message every friday 7:57pm");
+  },
+  null,
+  true,
+  "America/Chicago"
+);
 
 // start the server
 app.listen(port);
@@ -132,17 +133,16 @@ app.post("/api", async (req, res) => {
   }
 
   try {
-    await Promise.all(
-      buildCharacterObj.guilds.map(async guild => {
-        let obtainGuild = await services.guildObtainer(guild);
+    await Promise.all(buildCharacterObj.guilds.map(async guild => {
+      let obtainGuild = await services.guildObtainer(guild)
         guildArray.push(`${obtainGuild.data.name} ${obtainGuild.data.tag}`);
-      })
-    );
+      }))
+    
 
     buildCharacterObj.guildNames = guildArray;
     res.send(buildCharacterObj);
   } catch (e) {
-    res.send("Submit failed! Contact Chris");
+    res.send('Submit failed! Contact Chris')
   }
 });
 
@@ -205,8 +205,8 @@ app.get("/topWeeklyGuild", async (req, res, next) => {
   res.send(results);
 });
 
-app.post("/contactMe", (req, res, next) => {
-  console.log(req.body.data);
-  emailService.mailServices(req.body.data);
-  res.send("Mail sent!");
-});
+app.post('/contactMe', (req, res, next) => {
+  console.log(req.body.data)
+  emailService.mailServices(req.body.data)
+  res.send('Mail sent!')
+})
