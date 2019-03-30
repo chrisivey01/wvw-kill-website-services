@@ -9,7 +9,8 @@ module.exports = {
       );
       let killIterator = 0;
       for (results of queryResults) {
-        let gw2Results = await services.obtainAchievements(player.api);
+        try{
+        let gw2Results = await services.obtainAchievements(results.api);
         delay(2000);
         let updatedkillResults = gw2Results.data.find(res => res.id === 283)
         console.log('Kill clear ' + killIterator++)
@@ -17,12 +18,15 @@ module.exports = {
         let current_kills = updatedkillResults.current;
         let weekly_tally = updatedkillResults.current;
         let weekly_kill_total = 0;
-        let api = player.api;
+        let api = results.api;
 
         let killWeeklySQL =
           "UPDATE users SET current_kills = ?, weekly_tally = ?, weekly_kill_total = ? WHERE api = ?";
         let values = [current_kills, weekly_tally, weekly_kill_total, api];
         await pool.query(killWeeklySQL, values);
+        }catch(e){
+          console.log(e.response)
+        }
       }
     } catch (e) {
       console.log(e.response);
