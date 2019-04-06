@@ -86,7 +86,7 @@ async function removeApis() {
 new CronJob(
   //update -1 for DST or +1 goes between 20 or 21
   // '30 * * * * *',
-  "0 05 21 * * FRI",
+  "0 57 20 * * FRI",
   function() {
     updateKillsFriday.updateKills(pool);
     console.log("You will see this message every friday 7:57pm");
