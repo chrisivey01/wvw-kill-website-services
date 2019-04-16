@@ -1,3 +1,4 @@
 /node_modules/
 node_modules/
 services/emailService.js
+/services/database.js
