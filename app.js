@@ -33,10 +33,10 @@ var CronJob = require("cron").CronJob;
 new CronJob(
   // "0 */15 * * * *",
 
-  "0 0 */1 * * *",
+  "0 */30 * * * *",
   function() {
     updateKills.updateKills(pool);
-    console.log("You will see this message every 1 hour");
+    console.log("You will see this message every 30 mins");
   },
   null,
   true,
@@ -52,6 +52,7 @@ new CronJob(
   "0 0 */6 * * *",
   function() {
     removeApis(pool);
+
     console.log("You will see this message every 6 hours");
   },
   null,
@@ -65,7 +66,7 @@ async function removeApis() {
   let iterator = 0;
   let badIterator = 0;
 
-  for (remove of results) {
+  for (let remove of results) {
     await delay(2000);
 
     let api = remove.api;
@@ -128,7 +129,8 @@ app.post("/api", async (req, res) => {
     buildCharacterObj.killInfo = obtainAchievements.data.find(
       res => res.id === 283
     );
-    buildCharacterObj;
+    buildCharacterObj.weekly_tally = buildCharacterObj.killInfo;
+    buildCharacterObj.weekly_kill_total = 0;
   } catch (e) {
     console.log(e.response.data.text);
     res.send(e.response.data);
@@ -157,7 +159,10 @@ app.post("/submit", (req, res) => {
     name: data.name,
     world: data.world,
     current_kills: data.killInfo.current,
+    weekly_kill_total: data.weekly_kill_total,
+    weekly_tally: data.weekly_tally.current,
     guild: guildSelector
+
   };
   console.log(myData);
 
